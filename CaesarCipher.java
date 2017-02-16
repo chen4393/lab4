@@ -4,13 +4,9 @@ public class CaesarCipher {
 	public String encrypt(String message) {
 		StringBuilder sb = new StringBuilder(message);
 		for (int i = 0; i < message.length(); i++) {
+			if (sb.charAt(i) == ' ')	continue;
 			int temp = (int)sb.charAt(i);
-			int origin = 0;
-			if (temp >= 97)
-				origin = 97;
-			else
-				origin = 65;
-			//System.out.println(temp);
+			int origin = (temp >= 97) ? 97 : 65;
 			temp = origin + (temp - origin + key) % 26;
 			sb.setCharAt(i, (char)temp);
 		}
@@ -19,27 +15,18 @@ public class CaesarCipher {
 	public String decrypt(String message) {
 		StringBuilder sb = new StringBuilder(message);
 		for (int i = 0; i < message.length(); i++) {
+			if (sb.charAt(i) == ' ')	continue;
 			int temp = (int)sb.charAt(i);
-			int origin = 0;
-			if (temp >= 97)
-				origin = 97;
-			else
-				origin = 65;
-			//System.out.println(temp);
-			int a = (temp - origin - key);
-			if (a < 0) {
-				temp = origin + a + 26;
-			}
-			else
-				temp = origin + a % 26;
-			//System.out.println(a);
+			int origin = (temp >= 97) ? 97 : 65;
+			int a = temp - origin - key;
+			temp = (a < 0) ? origin + a + 26 : origin + a % 26;
 			sb.setCharAt(i, (char)temp);
 		}
 		return sb.toString();
 	}
 	public static void main(String[] args) {
 		CaesarCipher cc = new CaesarCipher(3);
-		String cipher = cc.encrypt("xyzXYZabcABC");
+		String cipher = cc.encrypt("xyz XYZ abc ABC");
 		System.out.println(cipher);
 		System.out.println(cc.decrypt(cipher));
 	}
